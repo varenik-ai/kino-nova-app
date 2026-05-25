@@ -168,7 +168,7 @@
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         setStatus('live');
-        video.muted = isIOS();
+        video.muted = isIOS() || !isAndroid();
         video.play().then(() => {
           if (video.muted) unmuteBtn.style.display = 'block';
           setupMediaSession();
@@ -180,7 +180,7 @@
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = proxiedUrl;
-      video.muted = isIOS();
+      video.muted = isIOS() || !isAndroid();
       video.play().then(() => {
         if (video.muted) unmuteBtn.style.display = 'block';
         setupMediaSession();
