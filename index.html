@@ -102,7 +102,9 @@
   let userPaused = false;
   let wakeLockSentinel = null;
   video.addEventListener('pause', () => {
-    if (isIOS() || (isAndroid() && document.visibilityState === 'visible')) userPaused = true;
+    // userPaused только если пользователь сам нажал паузу (экран виден)
+    // Если экран скрыт — это система, не пользователь
+    if (document.visibilityState === 'visible') userPaused = true;
     if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
     if (document.visibilityState === 'visible') {
       const a = document.getElementById('audio-bg'); if (a) a.pause();
