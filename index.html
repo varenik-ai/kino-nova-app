@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Kino Nova</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background: #0a0a0a; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: white; overflow-x: hidden; }
+    body { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+    .logo { font-size: 28px; font-weight: 900; color: #e63946; letter-spacing: 2px; margin-bottom: 16px; text-transform: uppercase; text-align: center; }
+    .logo span { color: white; }
+    #video-container { width: 100%; max-width: 900px; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,.6); position: relative; }
+    video { width: 100%; display: block; background: #000; }
+    #status { margin-top: 14px; font-size: 13px; color: #888; text-align: center; }
+    .dot { display: inline-block; width: 8px; height: 8px; background: #e63946; border-radius: 50%; margin-right: 6px; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.2} }
+    .btn { margin-top: 12px; padding: 12px 24px; color: white; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; width: 90%; max-width: 340px; transition: opacity .2s ease; }
+    .btn:active { opacity: .8; }
+    #reload-btn { background: #333; display: none; }
+    #unmute-btn { background: #e63946; display: none; }
+    #fullscreen-btn { background: #1a1a2e; border: 1px solid #444; display: block; }
+    #video-container:fullscreen, #video-container:-webkit-full-screen { width: 100vw !important; height: 100vh !important; max-width: none !important; border-radius: 0 !important; }
+    #video-container:fullscreen video, #video-container:-webkit-full-screen video { width: 100vw; height: 100vh; object-fit: contain; }
+  </style>
+</head>
+<body>
+
+<div class="logo">KINO <span>NOVA</span></div>
+<div id="video-container">
+  <video id="video" controls autoplay playsinline webkit-playsinline airplay="allow"></video>
+  <audio id="audio-bg" style="display:none"></audio>
+</div>
+<div id="status"><span class="dot"></span>...</div>
+<button id="reload-btn" class="btn"></button>
+<button id="unmute-btn" class="btn"></button>
+<button id="fullscreen-btn" class="btn"></button>
+
+<script>
+  if (window.Telegram?.WebApp) {
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();
+  }
+
+  const T = {
+    ru: { loading:'Получаем поток...', connecting:'Подключение...', live:'Kino Nova — прямой эфир 🔴', pressPlay:'Kino Nova — прямой эфир 🔴', errorStream:'Ошибка — переподключаемся...', errorUrl:'Не удалось получить URL', errorServer:'Ошибка сервера', reconnect:'🔄 Переподключиться', unmute:'🔊 Включить звук', fullscreen:'🔳 Полный экран' },
+    bg: { loading:'Зареждаме...', connecting:'Свързване...', live:'Kino Nova — на живо 🔴', pressPlay:'Kino Nova — на живо 🔴', errorStream:'Грешка...', errorUrl:'Неуспешно', errorServer:'Грешка', reconnect:'🔄 Свържи отново', unmute:'🔊 Включи звук', fullscreen:'🔳 Цял екран' },
+    en: { loading:'Loading...', connecting:'Connecting...', live:'Kino Nova — Live 🔴', pressPlay:'Kino Nova — Live 🔴', errorStream:'Error — reconnecting...', errorUrl:'Failed to get URL', errorServer:'Server error', reconnect:'🔄 Reconnect', unmute:'🔊 Unmute', fullscreen:'🔳 Fullscreen' },
+    de: { loading:'Laden...', connecting:'Verbinden...', live:'Kino Nova — Live 🔴', pressPlay:'Kino Nova — Live 🔴', errorStream:'Fehler...', errorUrl:'URL Fehler', errorServer:'Serverfehler', reconnect:'🔄 Neu verbinden', unmute:'🔊 Ton an', fullscreen:'🔳 Vollbild' },
+    fr: { loading:'Chargement...', connecting:'Connexion...', live:'Kino Nova — En direct 🔴', pressPlay:'Kino Nova — En direct 🔴', errorStream:'Erreur...', errorUrl:'URL introuvable', errorServer:'Erreur serveur', reconnect:'🔄 Reconnecter', unmute:'🔊 Son', fullscreen:'🔳 Plein écran' },
+    es: { loading:'Cargando...', connecting:'Conectando...', live:'Kino Nova — En vivo 🔴', pressPlay:'Kino Nova — En vivo 🔴', errorStream:'Error...', errorUrl:'URL fallida', errorServer:'Error servidor', reconnect:'🔄 Reconectar', unmute:'🔊 Sonido', fullscreen:'🔳 Pantalla completa' },
+    uk: { loading:'Отримує
+cat > index.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Kino Nova</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background: #0a0a0a; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: white; overflow-x: hidden; }
+    body { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+    .logo { font-size: 28px; font-weight: 900; color: #e63946; letter-spacing: 2px; margin-bottom: 16px; text-transform: uppercase; text-align: center; }
+    .logo span { color: white; }
+    #video-container { width: 100%; max-width: 900px; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,.6); position: relative; }
+    video { width: 100%; display: block; background: #000; }
+    #status { margin-top: 14px; font-size: 13px; color: #888; text-align: center; }
+    .dot { display: inline-block; width: 8px; height: 8px; background: #e63946; border-radius: 50%; margin-right: 6px; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.2} }
+    .btn { margin-top: 12px; padding: 12px 24px; color: white; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; width: 90%; max-width: 340px; transition: opacity .2s ease; }
+    .btn:active { opacity: .8; }
+    #reload-btn { background: #333; display: none; }
+    #unmute-btn { background: #e63946; display: none; }
+    #fullscreen-btn { background: #1a1a2e; border: 1px solid #444; display: block; }
+    #video-container:fullscreen, #video-container:-webkit-full-screen { width: 100vw !important; height: 100vh !important; max-width: none !important; border-radius: 0 !important; }
+    #video-container:fullscreen video, #video-container:-webkit-full-screen video { width: 100vw; height: 100vh; object-fit: contain; }
+  </style>
+</head>
+<body>
+
+<div class="logo">KINO <span>NOVA</span></div>
+<div id="video-container">
+  <video id="video" controls autoplay playsinline webkit-playsinline airplay="allow"></video>
+  <audio id="audio-bg" style="display:none"></audio>
+</div>
+<div id="status"><span class="dot"></span>...</div>
+<button id="reload-btn" class="btn"></button>
+<button id="unmute-btn" class="btn"></button>
+<button id="fullscreen-btn" class="btn"></button>
+
+<script>
+  if (window.Telegram?.WebApp) {
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();
+  }
+
+  const T = {
+    ru: { loading:'Получаем поток...', connecting:'Подключение...', live:'Kino Nova — прямой эфир 🔴', pressPlay:'Kino Nova — прямой эфир 🔴', errorStream:'Ошибка — переподключаемся...', errorUrl:'Не удалось получить URL', errorServer:'Ошибка сервера', reconnect:'🔄 Переподключиться', unmute:'🔊 Включить звук', fullscreen:'🔳 Полный экран' },
+    bg: { loading:'Зареждаме...', connecting:'Свързване...', live:'Kino Nova — на живо 🔴', pressPlay:'Kino Nova — на живо 🔴', errorStream:'Грешка...', errorUrl:'Неуспешно', errorServer:'Грешка', reconnect:'🔄 Свържи отново', unmute:'🔊 Включи звук', fullscreen:'🔳 Цял екран' },
+    en: { loading:'Loading...', connecting:'Connecting...', live:'Kino Nova — Live 🔴', pressPlay:'Kino Nova — Live 🔴', errorStream:'Error — reconnecting...', errorUrl:'Failed to get URL', errorServer:'Server error', reconnect:'🔄 Reconnect', unmute:'🔊 Unmute', fullscreen:'🔳 Fullscreen' },
+    de: { loading:'Laden...', connecting:'Verbinden...', live:'Kino Nova — Live 🔴', pressPlay:'Kino Nova — Live 🔴', errorStream:'Fehler...', errorUrl:'URL Fehler', errorServer:'Serverfehler', reconnect:'🔄 Neu verbinden', unmute:'🔊 Ton an', fullscreen:'🔳 Vollbild' },
+    fr: { loading:'Chargement...', connecting:'Connexion...', live:'Kino Nova — En direct 🔴', pressPlay:'Kino Nova — En direct 🔴', errorStream:'Erreur...', errorUrl:'URL introuvable', errorServer:'Erreur serveur', reconnect:'🔄 Reconnecter', unmute:'🔊 Son', fullscreen:'🔳 Plein écran' },
+    es: { loading:'Cargando...', connecting:'Conectando...', live:'Kino Nova — En vivo 🔴', pressPlay:'Kino Nova — En vivo 🔴', errorStream:'Error...', errorUrl:'URL fallida', errorServer:'Error servidor', reconnect:'🔄 Reconectar', unmute:'🔊 Sonido', fullscreen:'🔳 Pantalla completa' },
+    uk: { loading:'Отримуємо...', connecting:'Підключення...', live:'Kino Nova — прямий ефір 🔴', pressPlay:'Kino Nova — прямий ефір 🔴', errorStream:'Помилка...', errorUrl:'URL не знайдено', errorServer:'Помилка сервера', reconnect:'🔄 Перепідключитись', unmute:'🔊 Звук', fullscreen:'🔳 Повний екран' },
+    tr: { loading:'Yükleniyor...', connecting:'Bağlanıyor...', live:'Kino Nova — Canlı 🔴', pressPlay:'Kino Nova — Canlı 🔴', errorStream:'Hata...', errorUrl:'URL alınamadı', errorServer:'Sunucu hatası', reconnect:'🔄 Yeniden Bağlan', unmute:'🔊 Ses', fullscreen:'🔳 Tam ekran' },
+  };
+
+  function getLang() {
+    try {
+      const s = Telegram.WebApp.initDataUnsafe?.user?.language_code?.split('-')[0].toLowerCase();
+      if (s && T[s]) return s;
+    } catch(e) {}
+    const b = (navigator.language || 'en').split('-')[0].toLowerCase();
+    return T[b] ? b : 'en';
+  }
+
+  const lang = getLang();
+  const t = T[lang];
+  document.documentElement.lang = lang;
+
+  const video         = document.getElementById('video');
+  const videoContainer = document.getElementById('video-container');
+  const status        = document.getElementById('status');
+  const reloadBtn     = document.getElementById('reload-btn');
+  const unmuteBtn     = document.getElementById('unmute-btn');
+  const fullscreenBtn = document.getElementById('fullscreen-btn');
+
+  reloadBtn.textContent     = t.reconnect;
+  unmuteBtn.textContent     = t.unmute;
+  fullscreenBtn.textContent = t.fullscreen;
+  reloadBtn.onclick    = init;
+  unmuteBtn.onclick    = unmute;
+  fullscreenBtn.onclick = openFullscreen;
+
+  const STREAM_API = 'https://kino-nova-proxy.vercel.app/api/stream';
+  const PROXY_BASE = 'https://kino-nova-proxy.vercel.app/api/proxy?url=';
+  let hls;
+
+  function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+  function isAndroid() {
+    return /Android/i.test(navigator.userAgent);
+  }
+
+  function setStatus(key, isError = false) {
+    const msg = t[key] || key;
+    status.innerHTML = isError ? '⚠️ ' + msg : '<span class="dot"></span>' + msg;
+    reloadBtn.style.display = isError ? 'block' : 'none';
+  }
+
+  function unmute() {
+    video.muted = false;
+    video.volume = 1;
+    unmuteBtn.style.display = 'none';
+  }
+
+  function setupMediaSession() {
+    if (!('mediaSession' in navigator)) return;
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: 'Kino Nova Bulgaria',
+      artist: 'Live 🔴',
+      album: 'Kino Nova',
+      artwork: [{ src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Kino_Nova_Logo.png/512px-Kino_Nova_Logo.png', sizes: '512x512', type: 'image/png' }]
+    });
+    navigator.mediaSession.playbackState = 'playing';
+    navigator.mediaSession.setActionHandler('play', async () => {
+      try { await video.play(); navigator.mediaSession.playbackState = 'playing'; } catch(e) {}
+    });
+    navigator.mediaSession.setActionHandler('pause', () => {
+      video.pause(); navigator.mediaSession.playbackState = 'paused';
+    });
+    navigator.mediaSession.setActionHandler('stop', () => {
+      video.pause(); navigator.mediaSession.playbackState = 'paused';
+    });
+  }
+
+  let userPaused = false;
+  let wakeLockSentinel = null;
+
+  video.addEventListener('pause', () => {
+    if (isIOS()) userPaused = true;
+    if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
+    if (document.visibilityState === 'visible') {
+      const audioBg = document.getElementById('audio-bg');
+      if (audioBg) audioBg.pause();
+    }
+    if (isAndroid() && document.visibilityState === 'hidden') {
+      setTimeout(async () => {
+        if (!userPaused && video.paused) {
+          try { await video.play(); } catch(e) {}
+        }
+      }, 300);
+    }
+  });
+
+  video.addEventListener('play', () => {
+    userPaused = false;
+    if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
+    if (isAndroid()) {
+      const audioBg = document.getElementById('audio-bg');
+      if (audioBg && audioBg.paused && audioBg.src) {
+        audioBg.play().catch(() => {});
+      }
+    }
+  });
+
+  document.addEventListener('visibilitychange', async () => {
+    if (isIOS()) {
+      if (document.visibilityState === 'visible' && !userPaused && video.paused) {
+        try { await video.play(); } catch(e) {}
+      }
+      return;
+    }
+    if (isAndroid() && document.visibilityState === 'hidden') {
+      setTimeout(async () => {
+        if (video.paused) { try { await video.play(); } catch(e) {} }
+        const audioBg = document.getElementById('audio-bg');
+        if (audioBg && audioBg.paused) { try { await audioBg.play(); } catch(e) {} }
+      }, 300);
+    }
+    if (document.visibilityState === 'visible' && !userPaused && video.paused) {
+      try { await video.play(); } catch(e) {}
+    }
+  });
+
+  window.addEventListener('pageshow', async () => {
+    if (!userPaused && video.paused) {
+      try { await video.play(); } catch(e) {}
+    }
+  });
+
+  async function requestWakeLock() {
+    try {
+      if ('wakeLock' in navigator) {
+        wakeLockSentinel = await navigator.wakeLock.request('screen');
+      }
+    } catch(e) {}
+  }
+
+  async function openFullscreen() {
+    try {
+      if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (document.exitFullscreen) await document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        return;
+      }
+      try {
+        if (window.Telegram?.WebApp?.requestFullscreen) {
+          await Telegram.WebApp.requestFullscreen(); return;
+        }
+      } catch(e) {}
+      const el = videoContainer;
+      if (el.requestFullscreen) { await el.requestFullscreen(); return; }
+      if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); return; }
+      if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+    } catch(e) {}
+  }
+
+  function loadStream(url) {
+    const proxiedUrl = PROXY_BASE + encodeURIComponent(url);
+    if (hls) hls.destroy();
+    setStatus('connecting');
+    unmuteBtn.style.display = 'none';
+
+    if (isAndroid()) {
+      const audioBg = document.getElementById('audio-bg');
+      if (audioBg) { audioBg.src = proxiedUrl; audioBg.play().catch(() => {}); }
+    }
+
+    if (Hls.isSupported()) {
+      hls = new Hls({ liveSyncDurationCount: 3, enableWorker: true });
+      hls.loadSource(proxiedUrl);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        setStatus('live');
+        video.muted = isIOS();
+        video.play().then(() => {
+          if (video.muted) unmuteBtn.style.display = 'block';
+          setupMediaSession();
+          if (!isIOS()) requestWakeLock();
+        }).catch(() => setStatus('pressPlay'));
+      });
+      hls.on(Hls.Events.ERROR, (e, data) => {
+        if (data.fatal) { setStatus('errorStream', true); setTimeout(init, 3000); }
+      });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = proxiedUrl;
+      video.muted = isIOS();
+      video.play().then(() => {
+        if (video.muted) unmuteBtn.style.display = 'block';
+        setupMediaSession();
+        if (!isIOS()) requestWakeLock();
+      });
+      setStatus('live');
+    }
+  }
+
+  async function init() {
+    setStatus('loading');
+    reloadBtn.style.display = 'none';
+    unmuteBtn.style.display = 'none';
+    try {
+      const r = await fetch(STREAM_API + '?t=' + Date.now());
+      const d = await r.json();
+      if (d.url) loadStream(d.url);
+      else setStatus('errorUrl', true);
+    } catch(e) {
+      setStatus('errorServer', true);
+    }
+  }
+
+  init();
+  setInterval(init, 25 * 60 * 1000);
+</script>
+</body>
+</html>
