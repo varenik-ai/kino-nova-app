@@ -115,23 +115,42 @@
     userPaused = false;
     if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
     if (isAndroid()) {
+      // Глушим audio-bg пока видео активно — звук идёт из video
       const a = document.getElementById('audio-bg');
-      if (a && a.paused && a.src) a.play().catch(() => {});
+      if (a) a.muted = true;
     }
   });
   document.addEventListener('visibilitychange', async () => {
     if (isIOS()) {
-      if (document.visibilityState === 'visible' && !userPaused && video.paused) { try { await video.play(); } catch(e) {} }
+      if (document.visibilityState === 'visible' && !userPaused && video.paused) {
+      try { await video.play(); } catch(e) {}
+    }
+    // При возврате глушим audio-bg — звук снова из video
+    if (document.visibilityState === 'visible' && isAndroid()) {
+      const a = document.getElementById('audio-bg');
+      if (a) a.muted = true;
+    }
       return;
     }
     if (isAndroid() && document.visibilityState === 'hidden') {
       setTimeout(async () => {
         if (video.paused) { try { await video.play(); } catch(e) {} }
+        // Включаем звук audio-bg в фоне
         const a = document.getElementById('audio-bg');
-        if (a && a.paused) { try { await a.play(); } catch(e) {} }
+        if (a) {
+          a.muted = false;
+          if (a.paused) { try { await a.play(); } catch(e) {} }
+        }
       }, 300);
     }
-    if (document.visibilityState === 'visible' && !userPaused && video.paused) { try { await video.play(); } catch(e) {} }
+    if (document.visibilityState === 'visible' && !userPaused && video.paused) {
+      try { await video.play(); } catch(e) {}
+    }
+    // При возврате глушим audio-bg — звук снова из video
+    if (document.visibilityState === 'visible' && isAndroid()) {
+      const a = document.getElementById('audio-bg');
+      if (a) a.muted = true;
+    }
   });
   window.addEventListener('pageshow', async () => {
     if (!userPaused && video.paused) { try { await video.play(); } catch(e) {} }
