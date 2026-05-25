@@ -30,7 +30,6 @@
 <div class="logo">KINO <span>NOVA</span></div>
 <div id="video-container">
   <video id="video" controls autoplay playsinline webkit-playsinline airplay="allow"></video>
-  <audio id="audio-bg" style="display:none"></audio>
 </div>
 <div id="status"><span class="dot"></span>...</div>
 <button id="reload-btn" class="btn"></button>
@@ -73,7 +72,6 @@
   const reloadBtn      = document.getElementById('reload-btn');
   const unmuteBtn      = document.getElementById('unmute-btn');
   const fullscreenBtn  = document.getElementById('fullscreen-btn');
-  const audioBg        = document.getElementById('audio-bg');
 
   reloadBtn.textContent     = t.reconnect;
   unmuteBtn.textContent     = t.unmute;
@@ -86,7 +84,6 @@
   const PROXY_BASE = 'https://kino-nova-proxy.vercel.app/api/proxy?url=';
 
   let hls          = null;
-  let hlsAudio     = null;
   let userPaused   = false;
   let pauseByUser  = false;
   let isReconnecting = false;   // fix #1: защита от параллельных reconnect
@@ -137,7 +134,6 @@
     clearTimeout(reconnectTimer);
     reconnectTimer = null;
     if (hls)      { hls.destroy();      hls      = null; }
-    if (hlsAudio) { hlsAudio.destroy(); hlsAudio = null; }
   }
 
   // ── Отслеживаем паузу пользователя ──────────────────────────────────────
@@ -153,8 +149,6 @@
     }
     pauseByUser = false;
     if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
-    // Останавливаем audio-bg только если пользователь сам нажал паузу
-    if (userPaused && audioBg) audioBg.pause();
   });
 
   video.addEventListener('play', () => {
@@ -162,15 +156,13 @@
     isReconnecting = false;
     if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
     // Глушим audio-bg пока видео активно на экране
-    if (isAndroid() && audioBg) audioBg.muted = true;
   });
 
   // fix #3: чистый visibilitychange без дублирования
   document.addEventListener('visibilitychange', async () => {
     if (document.visibilityState === 'visible') {
       // Возврат в приложение
-      if (isAndroid() && audioBg) audioBg.muted = true;
-      if (!userPaused && video.paused) {
+        if (!userPaused && video.paused) {
         try { await video.play(); } catch(e) {}
       }
     } else {
@@ -216,22 +208,7 @@
     setStatus('connecting');
     unmuteBtn.style.display = 'none';
 
-    // fix #5: Android audio-bg с корректным destroy
-    if (isAndroid() && audioBg) {
-      if (Hls.isSupported()) {
-        hlsAudio = new Hls({ liveSyncDurationCount: 3, enableWorker: true });
-        hlsAudio.loadSource(proxiedUrl);
-        hlsAudio.attachMedia(audioBg);
-        hlsAudio.on(Hls.Events.MANIFEST_PARSED, () => {
-          audioBg.muted = true; // глушим — звук из video
-          audioBg.play().catch(() => {});
-        });
-      } else {
-        audioBg.src = proxiedUrl;
-        audioBg.muted = true;
-        audioBg.play().catch(() => {});
-      }
-    }
+
 
     // fix #4: всегда muted при автостарте
     video.muted = true;
