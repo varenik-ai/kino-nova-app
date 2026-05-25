@@ -101,10 +101,16 @@
   }
   let userPaused = false;
   let wakeLockSentinel = null;
+  // Отслеживаем клик по кнопке паузы в контролах
+  let pauseByUser = false;
+  video.addEventListener('mousedown', () => { pauseByUser = true; });
+  video.addEventListener('touchstart', () => { pauseByUser = true; });
+
   video.addEventListener('pause', () => {
-    // userPaused только если пользователь сам нажал паузу (экран виден)
-    // Если экран скрыт — это система, не пользователь
-    if (document.visibilityState === 'visible') userPaused = true;
+    if (isIOS()) userPaused = true;
+    // Android: пауза от пользователя только если он кликнул по плееру
+    if (isAndroid() && pauseByUser) userPaused = true;
+    pauseByUser = false;
     if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
     if (document.visibilityState === 'visible') {
       const a = document.getElementById('audio-bg'); if (a) a.pause();
