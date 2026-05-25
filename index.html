@@ -174,14 +174,10 @@
         try { await video.play(); } catch(e) {}
       }
     } else {
-      // Уход в фон — только Android
-      if (!isAndroid() || userPaused) return;
+      // Уход в фон — пытаемся удержать video
+      if (userPaused) return;
       setTimeout(async () => {
         if (video.paused) { try { await video.play(); } catch(e) {} }
-        if (audioBg) {
-          audioBg.muted = false;
-          if (audioBg.paused) { try { await audioBg.play(); } catch(e) {} }
-        }
       }, 300);
     }
   });
