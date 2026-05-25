@@ -160,7 +160,19 @@
     unmuteBtn.style.display = 'none';
     if (isAndroid()) {
       const a = document.getElementById('audio-bg');
-      if (a) { a.src = proxiedUrl; a.play().catch(() => {}); }
+      if (a) {
+        if (Hls.isSupported()) {
+          const hlsAudio = new Hls({ liveSyncDurationCount: 3 });
+          hlsAudio.loadSource(proxiedUrl);
+          hlsAudio.attachMedia(a);
+          hlsAudio.on(Hls.Events.MANIFEST_PARSED, () => {
+            a.play().catch(() => {});
+          });
+        } else {
+          a.src = proxiedUrl;
+          a.play().catch(() => {});
+        }
+      }
     }
     if (Hls.isSupported()) {
       hls = new Hls({ liveSyncDurationCount: 3, enableWorker: true });
