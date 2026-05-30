@@ -248,6 +248,7 @@
       hls.loadSource(proxiedUrl);
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        logEvent('stream_start');
         setStatus('live');
         logEvent('stream_start');
         video.play().then(() => {
