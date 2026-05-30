@@ -80,7 +80,10 @@
   fullscreenBtn.textContent = t.fullscreen;
   reloadBtn.onclick     = () => init();
   unmuteBtn.onclick     = unmute;
-  fullscreenBtn.onclick = openFullscreen;
+  fullscreenBtn.onclick = function() {
+    alert('Button clicked!');
+    openFullscreen();
+  };
 
   const STREAM_API = 'https://kino-nova-proxy.vercel.app/api/stream';
   const PROXY_BASE = 'https://kino-nova-proxy.vercel.app/api/proxy?url=';
