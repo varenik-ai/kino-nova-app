@@ -88,6 +88,19 @@
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
+    // Тест requestFullscreen
+    setTimeout(() => {
+      if (Telegram.WebApp.requestFullscreen) {
+        try {
+          Telegram.WebApp.requestFullscreen();
+          console.log('requestFullscreen called!');
+        } catch(e) {
+          console.log('requestFullscreen error:', e);
+        }
+      } else {
+        console.log('requestFullscreen NOT supported');
+      }
+    }, 2000);
     // Скрываем шапку Telegram
     try {
       Telegram.WebApp.setHeaderColor('#000000');
