@@ -186,32 +186,16 @@
 
   // ── Fullscreen ───────────────────────────────────────────────────────────
   async function openFullscreen() {
-    // Диагностика
-    console.log("Telegram", !!window.Telegram);
-    console.log("WebApp", !!window.Telegram?.WebApp);
-    console.log("isExpanded", Telegram?.WebApp?.isExpanded);
-    console.log("requestFullscreen", typeof Telegram?.WebApp?.requestFullscreen);
-    console.log("fullscreenEnabled", document.fullscreenEnabled);
-    console.log("video.requestFullscreen", typeof video.requestFullscreen);
-    console.log("video.webkitEnterFullscreen", typeof video.webkitEnterFullscreen);
-
-    try {
-      if (document.fullscreenElement || document.webkitFullscreenElement) {
-        if (document.exitFullscreen) await document.exitFullscreen();
-        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-        return;
-      }
-      if (window.Telegram?.WebApp?.requestFullscreen) {
-        try { await Telegram.WebApp.requestFullscreen(); return; } catch(e) { console.error('TG FS error:', e); }
-      }
-      if (isAndroid() && video.requestFullscreen) {
-        await video.requestFullscreen(); return;
-      }
-      const el = videoContainer;
-      if (el.requestFullscreen)       { await el.requestFullscreen(); return; }
-      if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); return; }
-      if (video.webkitEnterFullscreen)  video.webkitEnterFullscreen();
-    } catch(e) { console.error('FS error:', e); }
+    // Показываем диагностику прямо на экране
+    const info = [
+      'TG: ' + !!window.Telegram,
+      'isExpanded: ' + Telegram?.WebApp?.isExpanded,
+      'TG.FS: ' + typeof Telegram?.WebApp?.requestFullscreen,
+      'doc.FS: ' + document.fullscreenEnabled,
+      'vid.FS: ' + typeof video.requestFullscreen,
+      'vid.webkit: ' + typeof video.webkitEnterFullscreen,
+    ].join('\n');
+    alert(info);
   }
 
   // ── Stream ───────────────────────────────────────────────────────────────
