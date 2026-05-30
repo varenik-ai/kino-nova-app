@@ -41,10 +41,6 @@
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
-    // Полноэкранный режим при старте — скрывает URL
-    if (Telegram.WebApp.requestFullscreen) {
-      try { Telegram.WebApp.requestFullscreen(); } catch(e) {}
-    }
   }
 
   const T = {
@@ -68,18 +64,6 @@
   }
 
   const lang = getLang();
-
-  // ===== Analytics =====
-  function logEvent(event) {
-    const device = isIOS() ? 'ios' : isAndroid() ? 'android' : 'desktop';
-    const lang = getLang();
-    fetch('https://kino-nova-proxy.vercel.app/api/log', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ channel: 'Kino Nova', event, device, lang })
-    }).catch(() => {});
-  }
-
   const t = T[lang] || T.en;
   document.documentElement.lang = lang;
 
@@ -208,12 +192,11 @@
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
         return;
       }
-      if (window.Telegram?.WebApp?.requestFullscreen) {
-        try { await Telegram.WebApp.requestFullscreen(); return; } catch(e) {}
-      }
-      if (isAndroid() && video.requestFullscreen) {
-        await video.requestFullscreen(); return;
-      }
+      try {
+        if (window.Telegram?.WebApp?.requestFullscreen) {
+          await Telegram.WebApp.requestFullscreen(); return;
+        }
+      } catch(e) {}
       const el = videoContainer;
       if (el.requestFullscreen)       { await el.requestFullscreen(); return; }
       if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); return; }
@@ -253,9 +236,7 @@
       hls.loadSource(proxiedUrl);
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        logEvent('stream_start');
         setStatus('live');
-        logEvent('stream_start');
         video.play().then(() => {
           unmuteBtn.style.display = 'block';
           setupMediaSession();
@@ -267,7 +248,6 @@
         if (data.fatal && !isReconnecting) {
           isReconnecting = true;
           setStatus('errorStream', true);
-          logEvent('stream_error');
           cleanUp();
           reconnectTimer = setTimeout(() => {
             isReconnecting = false;
@@ -288,7 +268,6 @@
 
   // fix #2: тихое обновление токена без перезапуска плеера
   async function refreshToken() {
-    logEvent('token_refresh');
     try {
       const r = await fetch(STREAM_API + '?t=' + Date.now());
       const d = await r.json();
