@@ -23,7 +23,7 @@
     #unmute-btn { background: #e63946; display: none; }
     #fullscreen-btn { background: #1a1a2e; border: 1px solid #444; display: block; }
     #video-container:fullscreen, #video-container:-webkit-full-screen { width: 100vw !important; height: 100vh !important; max-width: none !important; border-radius: 0 !important; display: flex; align-items: center; justify-content: center; }
-    #video-container:fullscreen video, #video-container:-webkit-full-screen video { width: auto !important; height: 100vh !important; max-width: 100vw; object-fit: contain; }
+    #video-container:fullscreen video, #video-container:-webkit-full-screen video { width: 100vw !important; height: auto !important; max-height: 100vh; object-fit: contain; }
 
     body.expanded {
       padding: 0 !important;
@@ -43,11 +43,7 @@
       display: flex !important;
       align-items: center !important;
     }
-    body.expanded video {
-      width: 100vw !important;
-      height: 100vh !important;
-      object-fit: contain !important;
-    }
+    body.expanded video { width: 100vw !important; height: auto !important; max-height: 100vh !important; object-fit: contain !important; }
     body.expanded #fullscreen-btn {
       position: fixed !important;
       bottom: 16px !important;
