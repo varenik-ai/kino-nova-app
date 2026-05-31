@@ -241,7 +241,7 @@
       // Обновляем стиль при смене ориентации
       window._fsOrientationHandler = () => {
         if (document.body.classList.contains('expanded')) {
-          video.style.cssText = 'width:100vw!important;height:100vh!important;object-fit:contain!important;';
+          video.style.cssText = 'width:100vw!important;height:auto!important;max-height:100vh!important;object-fit:contain!important;';
         }
       };
       window.addEventListener('orientationchange', window._fsOrientationHandler);
