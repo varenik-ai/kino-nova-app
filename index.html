@@ -22,8 +22,8 @@
     #reload-btn { background: #333; display: none; }
     #unmute-btn { background: #e63946; display: none; }
     #fullscreen-btn { background: #1a1a2e; border: 1px solid #444; display: block; }
-    #video-container:fullscreen, #video-container:-webkit-full-screen { width: 100vw !important; height: 100dvh !important; max-width: none !important; border-radius: 0 !important; display: flex; align-items: center; justify-content: center; }
-    #video-container:fullscreen video, #video-container:-webkit-full-screen video { width: 100vw !important; height: auto !important; max-height: 100vh; object-fit: contain; }
+    #video-container:fullscreen, #video-container:-webkit-full-screen { width: 100vw !important; height: 100dvh !important; max-width: none !important; border-radius: 0 !important; }
+    #video-container:fullscreen video, #video-container:-webkit-full-screen video { width: 100vw; height: 100vh; object-fit: contain; }
 
     body.expanded {
       padding: 0 !important;
@@ -43,7 +43,11 @@
       display: flex !important;
       align-items: center !important;
     }
-    body.expanded video { width: 100vw !important; height: auto !important; max-height: 100vh !important; object-fit: contain !important; }
+    body.expanded video {
+      width: 100vw !important;
+      height: 100vh !important;
+      object-fit: contain !important;
+    }
     body.expanded #fullscreen-btn {
       position: fixed !important;
       bottom: 16px !important;
@@ -56,10 +60,11 @@
   </style>
 </head>
 <body>
+
 <div class="logo">KINO <span>NOVA</span></div>
 <div id="video-container">
   <video id="video" controls autoplay playsinline webkit-playsinline airplay="allow"></video>
-  <audio id="audio-bg" style="display:none" muted></audio>
+  <audio id="audio-bg" style="display:none"></audio>
 </div>
 <div id="status"><span class="dot"></span>...</div>
 <button id="reload-btn" class="btn"></button>
@@ -73,14 +78,14 @@
   }
 
   const T = {
-    ru: { loading:'Получаем поток...', connecting:'Подключение...', live:'Kino Nova — прямой эфир 🔴', pressPlay:'Нажмите ▶ для просмотра', errorStream:'Ошибка потока...', errorUrl:'Не удалось получить URL', errorServer:'Ошибка сервера', reconnect:'🔄 Переподключиться', unmute:'🔊 Включить звук', fullscreen:'🔳 Полный экран' },
-    bg: { loading:'Зареждаме...', connecting:'Свързване...', live:'Kino Nova — на живо 🔴', pressPlay:'Натиснете ▶ за пускане', errorStream:'Грешка на потока...', errorUrl:'Неуспешно', errorServer:'Грешка', reconnect:'🔄 Свържи отново', unmute:'🔊 Включи звук', fullscreen:'🔳 Цял екран' },
-    en: { loading:'Loading...', connecting:'Connecting...', live:'Kino Nova — Live 🔴', pressPlay:'Press ▶ to watch', errorStream:'Stream error...', errorUrl:'Failed to get URL', errorServer:'Server error', reconnect:'🔄 Reconnect', unmute:'🔊 Unmute', fullscreen:'🔳 Fullscreen' },
-    de: { loading:'Laden...', connecting:'Verbinden...', live:'Kino Nova — Live 🔴', pressPlay:'▶ drücken', errorStream:'Stream-Fehler...', errorUrl:'URL Fehler', errorServer:'Serverfehler', reconnect:'🔄 Neu verbinden', unmute:'🔊 Ton an', fullscreen:'🔳 Vollbild' },
-    fr: { loading:'Chargement...', connecting:'Connexion...', live:'Kino Nova — En direct 🔴', pressPlay:'Appuyez ▶', errorStream:'Erreur flux...', errorUrl:'URL introuvable', errorServer:'Erreur serveur', reconnect:'🔄 Reconnecter', unmute:'🔊 Son', fullscreen:'🔳 Plein écran' },
-    es: { loading:'Cargando...', connecting:'Conectando...', live:'Kino Nova — En vivo 🔴', pressPlay:'Presione ▶', errorStream:'Error de stream...', errorUrl:'URL fallida', errorServer:'Error servidor', reconnect:'🔄 Reconectar', unmute:'🔊 Sonido', fullscreen:'🔳 Pantalla completa' },
-    uk: { loading:'Отримуємо...', connecting:'Підключення...', live:'Kino Nova — прямий ефір 🔴', pressPlay:'Натисніть ▶', errorStream:'Помилка потоку...', errorUrl:'URL не знайдено', errorServer:'Помилка сервера', reconnect:'🔄 Перепідключитись', unmute:'🔊 Звук', fullscreen:'🔳 Повний екран' },
-    tr: { loading:'Yükleniyor...', connecting:'Bağlanıyor...', live:'Kino Nova — Canlı 🔴', pressPlay:'▶ basın', errorStream:'Yayın hatası...', errorUrl:'URL alınamadı', errorServer:'Sunucu hatası', reconnect:'🔄 Yeniden Bağlan', unmute:'🔊 Ses', fullscreen:'🔳 Tam ekran' },
+    ru: { loading:'Получаем поток...', connecting:'Подключение...', live:'Kino Nova — прямой эфир 🔴', pressPlay:'Kino Nova — прямой эфир 🔴', errorStream:'Ошибка — переподключаемся...', errorUrl:'Не удалось получить URL', errorServer:'Ошибка сервера', reconnect:'🔄 Переподключиться', unmute:'🔊 Включить звук', fullscreen:'🔳 Полный экран' },
+    bg: { loading:'Зареждаме...', connecting:'Свързване...', live:'Kino Nova — на живо 🔴', pressPlay:'Kino Nova — на живо 🔴', errorStream:'Грешка...', errorUrl:'Неуспешно', errorServer:'Грешка', reconnect:'🔄 Свържи отново', unmute:'🔊 Включи звук', fullscreen:'🔳 Цял екран' },
+    en: { loading:'Loading...', connecting:'Connecting...', live:'Kino Nova — Live 🔴', pressPlay:'Kino Nova — Live 🔴', errorStream:'Error — reconnecting...', errorUrl:'Failed to get URL', errorServer:'Server error', reconnect:'🔄 Reconnect', unmute:'🔊 Unmute', fullscreen:'🔳 Fullscreen' },
+    de: { loading:'Laden...', connecting:'Verbinden...', live:'Kino Nova — Live 🔴', pressPlay:'Kino Nova — Live 🔴', errorStream:'Fehler...', errorUrl:'URL Fehler', errorServer:'Serverfehler', reconnect:'🔄 Neu verbinden', unmute:'🔊 Ton an', fullscreen:'🔳 Vollbild' },
+    fr: { loading:'Chargement...', connecting:'Connexion...', live:'Kino Nova — En direct 🔴', pressPlay:'Kino Nova — En direct 🔴', errorStream:'Erreur...', errorUrl:'URL introuvable', errorServer:'Erreur serveur', reconnect:'🔄 Reconnecter', unmute:'🔊 Son', fullscreen:'🔳 Plein écran' },
+    es: { loading:'Cargando...', connecting:'Conectando...', live:'Kino Nova — En vivo 🔴', pressPlay:'Kino Nova — En vivo 🔴', errorStream:'Error...', errorUrl:'URL fallida', errorServer:'Error servidor', reconnect:'🔄 Reconectar', unmute:'🔊 Sonido', fullscreen:'🔳 Pantalla completa' },
+    uk: { loading:'Отримуємо...', connecting:'Підключення...', live:'Kino Nova — прямий ефір 🔴', pressPlay:'Kino Nova — прямий ефір 🔴', errorStream:'Помилка...', errorUrl:'URL не знайдено', errorServer:'Помилка сервера', reconnect:'🔄 Перепідключитись', unmute:'🔊 Звук', fullscreen:'🔳 Повний екран' },
+    tr: { loading:'Yükleniyor...', connecting:'Bağlanıyor...', live:'Kino Nova — Canlı 🔴', pressPlay:'Kino Nova — Canlı 🔴', errorStream:'Hata...', errorUrl:'URL alınamadı', errorServer:'Sunucu hatası', reconnect:'🔄 Yeniden Bağlan', unmute:'🔊 Ses', fullscreen:'🔳 Tam ekran' },
   };
 
   function getLang() {
@@ -93,42 +98,26 @@
   }
 
   const lang = getLang();
-  const t = T[lang] || T.en;
+  const t = T[lang];
   document.documentElement.lang = lang;
 
-  const video          = document.getElementById('video');
+  const video        = document.getElementById('video');
   const videoContainer = document.getElementById('video-container');
-  const status         = document.getElementById('status');
-  const reloadBtn      = document.getElementById('reload-btn');
-  const unmuteBtn      = document.getElementById('unmute-btn');
-  const fullscreenBtn  = document.getElementById('fullscreen-btn');
+  const status       = document.getElementById('status');
+  const reloadBtn    = document.getElementById('reload-btn');
+  const unmuteBtn    = document.getElementById('unmute-btn');
+  const fullscreenBtn = document.getElementById('fullscreen-btn');
 
-  const audioBg = document.getElementById('audio-bg');
-  reloadBtn.textContent     = t.reconnect;
-  unmuteBtn.textContent     = t.unmute;
+  reloadBtn.textContent    = t.reconnect;
+  unmuteBtn.textContent    = t.unmute;
   fullscreenBtn.textContent = t.fullscreen;
-  reloadBtn.onclick     = () => init();
-  unmuteBtn.onclick     = unmute;
+  reloadBtn.onclick = init;
+  unmuteBtn.onclick = unmute;
   fullscreenBtn.onclick = openFullscreen;
 
-  const STREAM_API = 'https://kino-nova-proxy.vercel.app/api/stream';
-  const PROXY_BASE = 'https://kino-nova-proxy.vercel.app/api/proxy?url=';
-
-  let hls          = null;
-  let hlsAudio     = null;
-  let userPaused   = false;
-  let userUnmuted  = false; // пользователь явно включил звук
-  let pauseByUser  = false;
-  let isReconnecting = false;   // fix #1: защита от параллельных reconnect
-  let reconnectTimer = null;
-  let wakeLockSentinel = null;
-  let currentUrl   = null;      // fix #2: храним текущий URL для тихого обновления
-
-  function isIOS() {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  }
-  function isAndroid() { return /Android/i.test(navigator.userAgent); }
+  const STREAM_API  = 'https://kino-nova-proxy.vercel.app/api/stream';
+  const PROXY_BASE  = 'https://kino-nova-proxy.vercel.app/api/proxy?url=';
+  let hls;
 
   function setStatus(key, isError = false) {
     const msg = t[key] || key;
@@ -143,81 +132,123 @@
     unmuteBtn.style.display = 'none';
   }
 
+  // ===== Media Session =====
   function setupMediaSession() {
     if (!('mediaSession' in navigator)) return;
     navigator.mediaSession.metadata = new MediaMetadata({
-      title: 'Kino Nova Bulgaria', artist: 'Live 🔴', album: 'Kino Nova',
+      title: 'Kino Nova Bulgaria',
+      artist: 'Live 🔴',
+      album: 'Kino Nova',
       artwork: [{ src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Kino_Nova_Logo.png/512px-Kino_Nova_Logo.png', sizes: '512x512', type: 'image/png' }]
     });
     navigator.mediaSession.playbackState = 'playing';
-    navigator.mediaSession.setActionHandler('play',  async () => { try { await video.play(); } catch(e) {} });
-    navigator.mediaSession.setActionHandler('pause', () => { video.pause(); });
-    navigator.mediaSession.setActionHandler('stop',  () => { video.pause(); });
+    navigator.mediaSession.setActionHandler('play', async () => {
+      try { await video.play(); navigator.mediaSession.playbackState = 'playing'; } catch(e) {}
+    });
+    navigator.mediaSession.setActionHandler('pause', () => {
+      video.pause(); navigator.mediaSession.playbackState = 'paused';
+    });
+    navigator.mediaSession.setActionHandler('stop', () => {
+      video.pause(); navigator.mediaSession.playbackState = 'paused';
+    });
   }
 
-  async function requestWakeLock() {
-    try {
-      if ('wakeLock' in navigator && !wakeLockSentinel) {
-        wakeLockSentinel = await navigator.wakeLock.request('screen');
-      }
-    } catch(e) {}
+
+
+  // ===== Background playback =====
+  let userUnmuted  = false;
+  let userPaused = false;
+  let wakeLockSentinel = null;
+
+  function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   }
 
-  // fix #5: централизованное уничтожение HLS инстансов
-  function cleanUp() {
-    clearTimeout(reconnectTimer);
-    reconnectTimer = null;
-    if (hls)      { hls.destroy();      hls      = null; }
-    if (hlsAudio) { hlsAudio.destroy(); hlsAudio = null; }
+  function isAndroid() {
+    return /Android/i.test(navigator.userAgent);
   }
 
-  // ── Отслеживаем паузу пользователя ──────────────────────────────────────
-  video.addEventListener('mousedown', () => { pauseByUser = true; });
-  video.addEventListener('touchstart', () => { pauseByUser = true; }, { passive: true });
-
+  // ===== Playback state =====
   video.addEventListener('pause', () => {
-    // fix #3: чёткое разделение iOS и Android
-    if (isIOS()) {
-      userPaused = true;
-    } else if (isAndroid() && pauseByUser) {
-      userPaused = true;
-    }
-    pauseByUser = false;
+    if (isIOS()) userPaused = true;
     if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
-  });
 
-  video.addEventListener('play', () => {
-    userPaused = false;
-    isReconnecting = false;
-    if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
-    // Глушим audio-bg пока видео активно на экране
-  });
-
-  // fix #3: чистый visibilitychange без дублирования
-  document.addEventListener('visibilitychange', async () => {
+    // Если пользователь сам нажал паузу — останавливаем и audio-bg
     if (document.visibilityState === 'visible') {
-      // Восстанавливаем muted если пользователь не включал звук
-      if (!userUnmuted) video.muted = true;
-      // Возврат в приложение
-      if (!userPaused && video.paused) {
-        try { await video.play(); } catch(e) {}
-      }
-    } else {
-      // Уход в фон — пытаемся удержать video
-      if (userPaused) return;
+      const audioBg = document.getElementById('audio-bg');
+      if (audioBg) audioBg.pause();
+    }
+
+    // Android: если экран погас и Telegram прибил playback — быстро возвращаем
+    if (isAndroid() && document.visibilityState === 'hidden') {
       setTimeout(async () => {
-        if (video.paused) { try { await video.play(); } catch(e) {} }
+        if (!userPaused && video.paused) {
+          try { await video.play(); } catch(e) {}
+        }
       }, 300);
     }
   });
 
+  // Синхронизируем play audio-bg с видео
+  video.addEventListener('play', () => {
+    userPaused = false;
+    if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
+    if (isAndroid()) {
+      const audioBg = document.getElementById('audio-bg');
+      if (audioBg && audioBg.paused && audioBg.src) {
+        audioBg.play().catch(() => {});
+      }
+    }
+  });
+
+  // ===== Visibility =====
+  document.addEventListener('visibilitychange', async () => {
+    // iPhone: не ломаем pause на lock screen
+    if (isIOS()) {
+      if (document.visibilityState === 'visible' && !userPaused && video.paused) {
+        try { await video.play(); } catch(e) {}
+      }
+      return;
+    }
+    // Android: экран выключился — держим playback
+    if (isAndroid() && document.visibilityState === 'hidden') {
+      // Пробуем удержать видео
+      setTimeout(async () => {
+        if (video.paused) {
+          try { await video.play(); } catch(e) {}
+        }
+        // Удерживаем аудио как резерв
+        const audioBg = document.getElementById('audio-bg');
+        if (audioBg && audioBg.paused) {
+          try { await audioBg.play(); } catch(e) {}
+        }
+      }, 300);
+    }
+    // Возврат в app
+    if (document.visibilityState === 'visible') {
+      if (!userUnmuted) video.muted = true;
+      if (!userPaused && video.paused) { try { await video.play(); } catch(e) {} }
+    }
+  });
+
+  // ===== Resume after return =====
   window.addEventListener('pageshow', async () => {
     if (!userPaused && video.paused) {
       try { await video.play(); } catch(e) {}
     }
   });
 
-  // ── Fullscreen ───────────────────────────────────────────────────────────
+  // ===== Wake Lock =====
+  async function requestWakeLock() {
+    try {
+      if ('wakeLock' in navigator) {
+        wakeLockSentinel = await navigator.wakeLock.request('screen');
+      }
+    } catch(e) {}
+  }
+
+  // ===== Fullscreen =====
   function openFullscreen() {
     const isExpanded = document.body.classList.contains('expanded');
     if (isExpanded) {
@@ -273,32 +304,21 @@
     }
   }
 
-  // ── Stream ───────────────────────────────────────────────────────────────
+  // ===== Stream =====
   function loadStream(url) {
-    currentUrl = url;
     const proxiedUrl = PROXY_BASE + encodeURIComponent(url);
-    cleanUp();
+    if (hls) hls.destroy();
     setStatus('connecting');
     unmuteBtn.style.display = 'none';
 
-
-
-    // Запускаем audio-bg MUTED — только для удержания фона на Android
-    if (isAndroid() && audioBg) {
-      if (Hls.isSupported()) {
-        if (hlsAudio) { hlsAudio.destroy(); hlsAudio = null; }
-        hlsAudio = new Hls({ liveSyncDurationCount: 3, enableWorker: true });
-        hlsAudio.loadSource(proxiedUrl);
-        hlsAudio.attachMedia(audioBg);
-        hlsAudio.on(Hls.Events.MANIFEST_PARSED, () => {
-          audioBg.muted = true; // ВСЕГДА muted — только для фона
-          audioBg.play().catch(() => {});
-        });
+    // Android: дублируем поток в audio для фонового воспроизведения
+    if (isAndroid()) {
+      const audioBg = document.getElementById('audio-bg');
+      if (audioBg) {
+        audioBg.src = proxiedUrl;
+        audioBg.play().catch(() => {});
       }
     }
-
-    // fix #4: всегда muted при автостарте
-    video.muted = true;
 
     if (Hls.isSupported()) {
       hls = new Hls({ liveSyncDurationCount: 3, enableWorker: true });
@@ -306,49 +326,32 @@
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         setStatus('live');
+        video.muted = true;
         video.play().then(() => {
           unmuteBtn.style.display = 'block';
           setupMediaSession();
           if (!isIOS()) requestWakeLock();
         }).catch(() => setStatus('pressPlay'));
       });
-      // fix #1: защита от параллельных reconnect
       hls.on(Hls.Events.ERROR, (e, data) => {
-        if (data.fatal && !isReconnecting) {
-          isReconnecting = true;
-          setStatus('errorStream', true);
-          cleanUp();
-          reconnectTimer = setTimeout(() => {
-            isReconnecting = false;
-            init();
-          }, 5000);
-        }
+        if (data.fatal) { setStatus('errorStream', true); setTimeout(init, 3000); }
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = proxiedUrl;
-      setStatus('live');
+      video.muted = true;
       video.play().then(() => {
         unmuteBtn.style.display = 'block';
         setupMediaSession();
         if (!isIOS()) requestWakeLock();
-      }).catch(() => setStatus('pressPlay'));
+      });
+      setStatus('live');
     }
-  }
-
-  // fix #2: тихое обновление токена без перезапуска плеера
-  async function refreshToken() {
-    try {
-      const r = await fetch(STREAM_API + '?t=' + Date.now());
-      const d = await r.json();
-      if (d.url) currentUrl = d.url; // просто сохраняем новый URL
-    } catch(e) {}
   }
 
   async function init() {
     setStatus('loading');
     reloadBtn.style.display = 'none';
     unmuteBtn.style.display = 'none';
-    isReconnecting = false;
     try {
       const r = await fetch(STREAM_API + '?t=' + Date.now());
       const d = await r.json();
@@ -359,11 +362,8 @@
     }
   }
 
-  // Запуск
   init();
-
-  // fix #2: тихое обновление токена раз в 20 минут — плеер НЕ перезапускается
-  setInterval(refreshToken, 20 * 60 * 1000);
+  setInterval(init, 25 * 60 * 1000);
 </script>
 </body>
 </html>
