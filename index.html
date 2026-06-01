@@ -117,6 +117,7 @@
   let hls          = null;
   let hlsAudio     = null;
   let userPaused   = false;
+  let userUnmuted  = false; // пользователь явно включил звук
   let pauseByUser  = false;
   let isReconnecting = false;   // fix #1: защита от параллельных reconnect
   let reconnectTimer = null;
@@ -136,6 +137,7 @@
   }
 
   function unmute() {
+    userUnmuted = true;
     video.muted = false;
     video.volume = 1;
     unmuteBtn.style.display = 'none';
@@ -194,8 +196,10 @@
   // fix #3: чистый visibilitychange без дублирования
   document.addEventListener('visibilitychange', async () => {
     if (document.visibilityState === 'visible') {
+      // Восстанавливаем muted если пользователь не включал звук
+      if (!userUnmuted) video.muted = true;
       // Возврат в приложение
-        if (!userPaused && video.paused) {
+      if (!userPaused && video.paused) {
         try { await video.play(); } catch(e) {}
       }
     } else {
